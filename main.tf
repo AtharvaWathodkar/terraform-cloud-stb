@@ -13,5 +13,6 @@ provider "google" {
 
 resource "google_storage_bucket" "example_bucket" {
   name          = "my-terraform-cloud-test-bucket-3990"
+  location = "US"
   storage_class = "STANDARD"
 }
