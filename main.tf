@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "google" {
-  project = "	burner-athwatho"
+  project = "burner-athwatho"
 }
 
 resource "google_storage_bucket" "example_bucket" {
