@@ -1,27 +1,11 @@
-provider "helm" {
-  kubernetes {
-    config_path = "~/.kube/config"
-  }
+module "gcs_buckets" {
+  source  = "terraform-google-modules/cloud-storage/google"
+  version = "6.1.0"
+
+  project_id      = var.project_id
+  names           = [var.bucket_name]
+  prefix          = var.prefix
+  location        = var.location
+  storage_class   = var.storage_class
+  lifecycle_rules = var.lifecycle_rules
 }
-
-resource "null_resource" "helm_login" {
-  provisioner "local-exec" {
-    command = "gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://us-central1-docker.pkg.dev"
-  }
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-}
-
-resource "helm_release" "example" {
-  name      = "example"
-  namespace = "default"
-  chart     = "oci://us-central1-docker.pkg.dev/burner-athwatho/helm-poc/hello-world"
-  version   = "0.1.0"
- depends_on = [
-    null_resource.helm_login
-  ]
-}
-
-
